@@ -1,4 +1,4 @@
-name: Pylint
+name: Pipeline
 
 on: [push]
 
@@ -41,8 +41,9 @@ jobs:
       - name: Run pytest
         run: |
           pytest --html=report/report.html --self-contained-html
+          underscored_version="$(echo ${{ matrix.python-version }} | sed 's/[.]/_/g')"
       - name: Upload pytest report
         uses: actions/upload-artifact@v4
         with:
           name: pytest-report
-          path: report/
+          path: report/python${{ underscored_version }}/
