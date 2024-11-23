@@ -66,14 +66,7 @@ jobs:
       - name: Upload pytest report
         uses: actions/upload-artifact@v4
         with:
-          name: pytest-report
-          if-no-files-found: error
-          overwrite: true
-          path: report/python${{ matrix.python-version }}/
-      - name: Upload pytest report
-        uses: actions/upload-artifact@v4
-        with:
           name: pytest-report${{ matrix.python-version }}
           if-no-files-found: error
-          overwrite: true
-          path: report/
+          overwrite: false
+          path: report/python${{ matrix.python-version }}/
