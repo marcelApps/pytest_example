@@ -1,4 +1,1 @@
-black
-pylint
 pytest
-pytest-html
