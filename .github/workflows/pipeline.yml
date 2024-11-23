@@ -40,8 +40,8 @@ jobs:
           pip install -r requirements.txt
       - name: Run pytest
         run: |
-          pytest --html=report/report.html --self-contained-html
           underscored_version="$(echo ${{ matrix.python-version }} | sed 's/[.]/_/g')"
+          pytest --html=report/python${{ env.underscored_version }}/report.html --self-contained-html
       - name: Upload pytest report
         uses: actions/upload-artifact@v4
         with:
