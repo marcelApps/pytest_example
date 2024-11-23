@@ -47,4 +47,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pytest-report
-          path: report/python${{ env.underscored_version }}/
+          path: report/python$underscored_version/
