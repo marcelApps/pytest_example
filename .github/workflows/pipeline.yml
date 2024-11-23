@@ -22,9 +22,28 @@ jobs:
       run: |
         pylint $(git ls-files '*.py')
 
+  black:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Analysing the code with black
+      run: |
+        black --check .
+
   pytest:
     runs-on: ubuntu-latest
-    needs: pylint
+    needs: [pylint, black]
     strategy:
       matrix:
         python-version: [ "3.8", "3.9", "3.10" ]
@@ -42,9 +61,9 @@ jobs:
         run: |
           underscored_version="$(echo ${{ matrix.python-version }} | sed 's/[.]/_/g')"
           export underscored_version
-          pytest --html=report/python$underscored_version/report.html --self-contained-html
+          pytest --html=report/python${{ matrix.python-version }}/report.html --self-contained-html
       - name: Upload pytest report
         uses: actions/upload-artifact@v4
         with:
           name: pytest-report
-          path: report/python$underscored_version/
+          path: report/python${{ matrix.python-version }}/
